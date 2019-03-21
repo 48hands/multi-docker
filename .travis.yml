@@ -1,0 +1,23 @@
+sudo: require
+services:
+  - docker
+
+before_install:
+  - docker build -t chocomint/react-test -f ./client/Dockerfil.dev ./client
+  
+sctipt:
+  - docker run chocomint/react-test npm test -- --coverage
+
+after_success:
+  - docker build -t nagakuray/multi-client ./client
+  - docker build -t nagakuray/multi-nginx ./nginx
+  - docker build -t ngakuray/multi-server ./server
+  - docker build -t nagakuray/multi-worker ./worker
+  # Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --passsword-stdin
+  # Take those images and push them to docker hub
+  - docker push nagakuray/multi-client
+  - docker push nagakuray/multi-nginx
+  - docker push ngakuray/multi-server
+  - docker push nagakuray/multi-worker
+
