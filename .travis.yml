@@ -3,7 +3,7 @@ services:
   - docker
 
 before_install:
-  - docker build -t chocomint/react-test -f ./client/Dockerfil.dev ./client
+  - docker build -t chocomint/react-test -f ./client/Dockerfile.dev ./client
   
 sctipt:
   - docker run chocomint/react-test npm test -- --coverage
